@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Commodity information Query</title>
+</head>
+<body>
+    <h1>Select product:</h1>
+    <select id="productSelect">
+        <option value="1">Apple</option>
+        <option value="2">Banana</option>
+        <option value="3">Orange</option>
+        <option value="4">Milk</option>
+        <option value="5">Bread</option>
+    </select>
+    <br><br>
+    <p>Product Name: <span id="productName"></span></p>
+    <p>Product Description: <span id="productDescription"></span></p>
+    <p>Product Quantity: <span id="productQuantity"></span></p>
+    <p>Commodity Price:<span id="productPrice"></span></p>
+
+    <script src="server.js"></script>
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const productSelect = document.getElementById("productSelect");
+        const productName = document.getElementById("productName");
+        const productDescription = document.getElementById("productDescription");
+        const productQuantity = document.getElementById("productQuantity");
+        const productPrice = document.getElementById("productPrice");
+    
+        productSelect.addEventListener("change", function () {
+            const selectedProductId = productSelect.value;
+    
+            // Send AJAX requests to the server to get product information
+            fetch(`/getProductInfo/${selectedProductId}`)
+                .then(response => response.json())
+                .then(data => {
+                    productName.textContent = data.name;
+                    productDescription.textContent = data.description;
+                    productQuantity.textContent = data.quantity;
+                    productPrice.textContent = data.price;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    });
+</script>
+</html>
